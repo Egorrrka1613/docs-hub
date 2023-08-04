@@ -81,7 +81,13 @@ function processVPConfig(lines) {
       if (trimmedLine.includes('text')) {
         if (!lines[index + 2].includes('collapsed:')) {
           const matches = regex.exec(trimmedLine);
-          if (currentCategory) {
+          const linkMatches = regex.exec(lines[index + 1].trimStart());
+          let link = linkMatches[1];
+          if (link.startsWith('/')) {
+            link = link.replace('/', '');
+          }
+          const split = link.split('/');
+          if (currentCategory && split.length !== 2 && split[1] !== '') {
             order[currentCategory].push(matches[1]);
           } else {
             order.menu.push(matches[1]);

@@ -15,6 +15,15 @@ dependencies:
   '@docsearch/react':
     specifier: 3.5.1
     version: 3.5.1(@algolia/client-search@4.18.0)(@types/react@18.2.16)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.6.0)
+  '@fuel-ts/interfaces':
+    specifier: ^0.48.2
+    version: 0.48.2
+  '@fuel-ts/keystore':
+    specifier: ^0.48.2
+    version: 0.48.2
+  '@fuel-ts/versions':
+    specifier: ^0.48.2
+    version: 0.48.2
   '@fuel-ui/config':
     specifier: ^0.16.1
     version: 0.16.1(typescript@5.1.6)
@@ -147,6 +156,9 @@ dependencies:
   toml:
     specifier: ^3.0.0
     version: 3.0.0
+  typedoc:
+    specifier: ^0.24.8
+    version: 0.24.8(typescript@5.1.6)
   unified:
     specifier: ^10.1.2
     version: 10.1.2
@@ -950,6 +962,7 @@ packages:
 
   /@emotion/memoize@0.7.4:
     resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -1532,8 +1545,19 @@ packages:
     resolution: {integrity: sha512-5E+uaIYh9DzjvbsMG/Lin1UPcR5rxPNulnw1uaqCGsBr/UroiWaX0MDCzTN+AGKlXokOCQQpMVtw2yFf6ZcskQ==}
     dev: false
 
+  /@fuel-ts/interfaces@0.48.2:
+    resolution: {integrity: sha512-dZX5JXAVm8AsSQyLNMnaG/mgdaZQAnzQ4p8Bjw0AxhSRAcu6rnByWAlrzehfUNSkY3EYtcRqzzrBojSTQ4gKKQ==}
+    dev: false
+
   /@fuel-ts/keystore@0.48.1:
     resolution: {integrity: sha512-D6Ha4Uu+Vvw3NIywE/k21FUjEIfAxn3iuUp+UMFVowv6MSRPZvVBmXdxM6hNovEc032qnBYbIpmZmvRIfQaUng==}
+    dependencies:
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/pbkdf2': 5.7.0
+    dev: false
+
+  /@fuel-ts/keystore@0.48.2:
+    resolution: {integrity: sha512-WIuW3RdOMTlrsIZdU5ul5KnnfVj1ElGltnl3lpfaUfvmczmI4LSoVdj8H1xinWTWBAhIPQ/UZqMaX4echorWrQ==}
     dependencies:
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/pbkdf2': 5.7.0
@@ -1682,6 +1706,15 @@ packages:
 
   /@fuel-ts/versions@0.48.1:
     resolution: {integrity: sha512-SZjl6fMEGQsKW+PR6vmJkdXSiUwZPA5nOXay5/QjGk+Ay/IQLKhP3599MyEZy7CD7CZcAgpYVJ9ktx+xHIVtjA==}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      cli-table: 0.3.11
+      semver: 7.5.4
+    dev: false
+
+  /@fuel-ts/versions@0.48.2:
+    resolution: {integrity: sha512-6y1kRQKoDHRhe6zbZh4miaCbtllbpVzHvEC52y31VMAQ7NBYm46LB5T8j5oGx3AJFIrCmPJ1ZJow7blEw+TKqw==}
     hasBin: true
     dependencies:
       chalk: 4.1.2
@@ -9158,6 +9191,10 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /lunr@2.3.9:
+    resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
+    dev: false
+
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
@@ -9186,6 +9223,12 @@ packages:
 
   /markdown-table@3.0.3:
     resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
+    dev: false
+
+  /marked@4.3.0:
+    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
+    engines: {node: '>= 12'}
+    hasBin: true
     dev: false
 
   /mdast-util-definitions@5.1.2:
@@ -11812,6 +11855,20 @@ packages:
       call-bind: 1.0.2
       for-each: 0.3.3
       is-typed-array: 1.1.10
+
+  /typedoc@0.24.8(typescript@5.1.6):
+    resolution: {integrity: sha512-ahJ6Cpcvxwaxfu4KtjA8qZNqS43wYt6JL27wYiIgl1vd38WW/KWX11YuAeZhuz9v+ttrutSsgK+XO1CjL1kA3w==}
+    engines: {node: '>= 14.14'}
+    hasBin: true
+    peerDependencies:
+      typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x
+    dependencies:
+      lunr: 2.3.9
+      marked: 4.3.0
+      minimatch: 9.0.2
+      shiki: 0.14.3
+      typescript: 5.1.6
+    dev: false
 
   /typescript@5.1.6:
     resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}

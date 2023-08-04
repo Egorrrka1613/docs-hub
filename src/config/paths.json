@@ -8,6 +8,7 @@
   "/index.md": ".md",
   "/README.md": ".md",
   "/guide/": "/",
+  "/api/": "/",
   "/forc_client/": "/",
   "fuel-graphql-docs": "graphql",
   "fuel-specs": "specs",

@@ -25,6 +25,9 @@
   "dependencies": {
     "@docsearch/css": "^3.5.1",
     "@docsearch/react": "3.5.1",
+    "@fuel-ts/interfaces": "^0.48.2",
+    "@fuel-ts/keystore": "^0.48.2",
+    "@fuel-ts/versions": "^0.48.2",
     "@fuel-ui/config": "^0.16.1",
     "@fuel-ui/css": "^0.16.1",
     "@fuel-ui/react": "^0.16.1",
@@ -69,6 +72,7 @@
     "strip-indent": "^4.0.0",
     "swr": "^2.2.0",
     "toml": "^3.0.0",
+    "typedoc": "^0.24.8",
     "unified": "^10.1.2",
     "unist-util-visit": "^5.0.0",
     "updates": "^14.3.4",
