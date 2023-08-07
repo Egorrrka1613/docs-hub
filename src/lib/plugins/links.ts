@@ -17,6 +17,7 @@ export function handleLinks(node: any, dirname: string) {
     const pathsConfig = JSON.parse(readFileSync(configPath, 'utf8'));
 
     let dir = dirname;
+    console.log('DIR', dir);
     Object.keys(pathsConfig).forEach((key) => {
       dir = dir.replaceAll(key, pathsConfig[key]);
     });

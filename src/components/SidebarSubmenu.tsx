@@ -44,7 +44,10 @@ export function SidebarSubmenu({
       {isOpened && (
         <List>
           {submenu?.map((item, index) => {
-            if (item.label !== label) {
+            if (
+              item.label !== label ||
+              (item.slug && item.slug.split('/').length > 3)
+            ) {
               return (
                 <List.Item key={index}>
                   <SidebarLink item={item} data-submenu />

@@ -5,7 +5,7 @@ import * as walk from 'acorn-walk';
 import fs from 'node:fs';
 import { EOL } from 'os';
 import path from 'path';
-import * as prettier from 'prettier';
+import prettier from 'prettier';
 import type { Root } from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 

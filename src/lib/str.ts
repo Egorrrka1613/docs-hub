@@ -28,9 +28,11 @@ export function capitalize(val: string): string {
     const isLowerCase = word === word.toLowerCase();
     if (isFirstWord || !isPrep || !isLowerCase) {
       if (word === 'fuelvm') {
-        word = 'fuelVM';
+        word = 'FuelVM';
       } else if (word === 'evm') {
-        word = 'eVM';
+        word = 'EVM';
+      } else if (word === 'api') {
+        word = 'API';
       }
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
