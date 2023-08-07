@@ -11,13 +11,13 @@ export function handleLinks(node: any, dirname: string) {
     newUrl = node.url
       .replace('.md', '')
       .replace('/index', '')
-      .replace('.html', '');
+      .replace('.html', '')
+      .toLowerCase();
 
     const configPath = join(DOCS_DIRECTORY, `../src/config/paths.json`);
     const pathsConfig = JSON.parse(readFileSync(configPath, 'utf8'));
 
     let dir = dirname;
-    console.log('DIR', dir);
     Object.keys(pathsConfig).forEach((key) => {
       dir = dir.replaceAll(key, pathsConfig[key]);
     });
@@ -41,5 +41,10 @@ export function handleLinks(node: any, dirname: string) {
   if (node.url.endsWith('CONTRIBUTING') && node.url.includes('github.com')) {
     newUrl = `${node.url}.md`;
   }
+
+  if (newUrl && newUrl.startsWith('/api/')) {
+    newUrl = newUrl.replace('/api/', '/docs/fuels-ts/');
+  }
+
   return newUrl;
 }

@@ -172,7 +172,6 @@ export function handlePlugins() {
           const content = handleExampleImports(node, dirname, rootDir, parent);
           node.value = content;
         } else if (mdBookLinks(node)) {
-          console.log('NODE', node);
           const newUrl = handleLinks(node, dirname);
           if (newUrl) node.url = newUrl;
         } else if (tsBookVersions(node)) {
