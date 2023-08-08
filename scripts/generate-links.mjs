@@ -24,6 +24,10 @@ const tsConfigPath = join(
   DOCS_DIRECTORY,
   './fuels-ts/apps/docs/.vitepress/config.ts'
 );
+const tsAPIOrderPath = join(
+  DOCS_DIRECTORY,
+  './fuels-ts/apps/docs/.typedoc/api-links.json'
+);
 
 const swaySummaryFile = fs.readFileSync(swaySummaryPath, 'utf8');
 const rustSummaryFile = fs.readFileSync(rustSummaryPath, 'utf8');
@@ -36,6 +40,7 @@ const aboutFuelOrderFile = JSON.parse(
   fs.readFileSync(aboutFuelOrderPath, 'utf8')
 );
 const tsConfigFile = fs.readFileSync(tsConfigPath, 'utf8');
+const tsAPIOrderFile = fs.readFileSync(tsAPIOrderPath, 'utf8');
 
 const forcLines = [];
 
@@ -67,43 +72,105 @@ async function main() {
   );
 }
 
+function extractData(inputString) {
+  // used for api.json order
+  const regex = /"([^"]+)":\s*"([^"]+)"/g;
+  let match = regex.exec(inputString);
+  if (match !== null) {
+    return match[2];
+  }
+  return null;
+}
+
+function handleVPLine(trimmedLine, lines, index, thisOrder, thisCat) {
+  const regex = /'([^']+)'/;
+  // Create a shallow copy
+  let newVPOrder = JSON.parse(JSON.stringify(thisOrder));
+  let category = thisCat;
+  if (
+    trimmedLine.includes('collapsed:') ||
+    trimmedLine.includes('"collapsed":')
+  ) {
+    // handle categories
+    if (trimmedLine.includes('collapsed:')) {
+      const matches = regex.exec(lines[index - 2]);
+      category = matches[1];
+    } else {
+      category = extractData(lines[index - 2]);
+    }
+    newVPOrder.menu.push(category);
+    newVPOrder[category] = [];
+  } else if (
+    // handle items
+    trimmedLine.includes('text') &&
+    !lines[index + 2].includes('collapsed:')
+  ) {
+    const matches = regex.exec(trimmedLine);
+    let linkMatches = regex.exec(lines[index + 1].trimStart());
+    let link;
+    let linkName;
+    if (linkMatches && matches) {
+      link = linkMatches[1];
+      linkName = matches[1];
+    } else {
+      linkName = extractData(trimmedLine);
+      link = extractData(lines[index + 1].trimStart());
+    }
+    if (link && linkName) {
+      if (link.startsWith('/')) {
+        link = link.replace('/', '');
+      }
+      const split = link.split('/');
+      if (category && split.length !== 2 && split[1] !== '') {
+        newVPOrder[category].push(linkName);
+      } else {
+        newVPOrder.menu.push(linkName);
+      }
+    }
+  } else if (trimmedLine.startsWith('apiLinks')) {
+    // handle API order
+    newVPOrder.menu.push('API');
+    const apiJSON = JSON.parse(tsAPIOrderFile);
+    const apiLines = JSON.stringify(apiJSON, null, 2).split(EOL);
+    apiLines.forEach((apiLine, apiIndex) => {
+      const trimmedAPILine = apiLine.trimStart();
+      const results = handleVPLine(
+        trimmedAPILine,
+        apiLines,
+        apiIndex,
+        newVPOrder,
+        category
+      );
+      category = results.category;
+      newVPOrder = results.newVPOrder;
+    });
+  }
+
+  return { newVPOrder, category };
+}
+
 function processVPConfig(lines) {
-  const order = { menu: ['fuels-ts'] };
+  let tsOrder = { menu: ['fuels-ts'] };
   let currentCategory;
   let foundStart = false;
-  const regex = /'([^']+)'/;
   lines.forEach((line, index) => {
     const trimmedLine = line.trimStart();
     if (foundStart) {
-      if (trimmedLine.includes('collapsed:')) {
-        const matches = regex.exec(lines[index - 2]);
-        currentCategory = matches[1];
-        order.menu.push(currentCategory);
-        order[currentCategory] = [];
-      }
-
-      if (trimmedLine.includes('text')) {
-        if (!lines[index + 2].includes('collapsed:')) {
-          const matches = regex.exec(trimmedLine);
-          const linkMatches = regex.exec(lines[index + 1].trimStart());
-          let link = linkMatches[1];
-          if (link.startsWith('/')) {
-            link = link.replace('/', '');
-          }
-          const split = link.split('/');
-          if (currentCategory && split.length !== 2 && split[1] !== '') {
-            order[currentCategory].push(matches[1]);
-          } else {
-            order.menu.push(matches[1]);
-          }
-        }
-      }
+      const { newVPOrder, category } = handleVPLine(
+        trimmedLine,
+        lines,
+        index,
+        tsOrder,
+        currentCategory
+      );
+      tsOrder = newVPOrder;
+      currentCategory = category;
     } else if (trimmedLine === 'sidebar: [') {
       foundStart = true;
     }
   });
 
-  return order;
+  return tsOrder;
 }
 
 function processSummary(lines, docsName) {
