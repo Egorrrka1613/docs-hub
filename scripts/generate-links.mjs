@@ -103,7 +103,8 @@ function handleVPLine(trimmedLine, lines, index, thisOrder, thisCat) {
   } else if (
     // handle items
     trimmedLine.includes('text') &&
-    !lines[index + 2].includes('collapsed:')
+    !lines[index + 2].includes('collapsed:') &&
+    !lines[index + 2].includes('"collapsed":')
   ) {
     const matches = regex.exec(trimmedLine);
     let linkMatches = regex.exec(lines[index + 1].trimStart());
